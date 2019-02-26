@@ -29,7 +29,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     private UserService userService;
 //    @Autowired
 //    private UserActionLogDao userActionLogDao;
-    private final Logger LOG = LoggerFactory.getLogger(MyShiroRealm.class);
+    private Logger logger = LoggerFactory.getLogger(MyShiroRealm.class);
 
     /**
      * 登录认证
@@ -39,16 +39,19 @@ public class MyShiroRealm extends AuthorizingRealm {
         //UsernamePasswordToken用于存放提交的登录信息
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         User user = userService.findByLoginname(token.getUsername());
-        if (user != null) {
-            LOG.info("username:" + user.getUsername());
-            List<Roles> roles = userService.findRolesByUserId(Integer.toString(user.getUserid()));
-            if (roles != null && roles.size() > 0) {
-                user.setRoles(roles.get(0));
-            }
-            // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
-            return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
-        }
-        return null;
+        logger.warn("Testing granted login request.");
+
+        return new SimpleAuthenticationInfo();
+//        if (user != null) {
+//            LOG.info("username:" + user.getUsername());
+//            List<Roles> roles = userService.findRolesByUserId(Integer.toString(user.getUserid()));
+//            if (roles != null && roles.size() > 0) {
+//                user.setRoles(roles.get(0));
+//            }
+//            // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
+//            return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+//        }
+//        return null;
     }
 
     /**
