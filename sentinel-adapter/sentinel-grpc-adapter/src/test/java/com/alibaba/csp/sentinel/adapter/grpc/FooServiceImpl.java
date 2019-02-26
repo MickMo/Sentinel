@@ -15,11 +15,6 @@
  */
 package com.alibaba.csp.sentinel.adapter.grpc;
 
-import com.alibaba.csp.sentinel.adapter.grpc.gen.FooRequest;
-import com.alibaba.csp.sentinel.adapter.grpc.gen.FooResponse;
-import com.alibaba.csp.sentinel.adapter.grpc.gen.FooServiceGrpc;
-
-import io.grpc.stub.StreamObserver;
 
 /**
  * Implementation of FooService defined in proto.
