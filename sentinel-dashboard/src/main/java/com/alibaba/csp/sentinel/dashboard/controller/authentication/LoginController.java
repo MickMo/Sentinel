@@ -4,7 +4,7 @@ package com.alibaba.csp.sentinel.dashboard.controller.authentication;
 import com.alibaba.csp.sentinel.dashboard.bean.User;
 import com.alibaba.csp.sentinel.dashboard.bean.login.VerifyCode;
 import com.alibaba.csp.sentinel.dashboard.service.user.UserService;
-import com.alibaba.csp.sentinel.dashboard.shiro.MyShiroRealm;
+import com.alibaba.csp.sentinel.dashboard.config.shiro.MyShiroRealm;
 import com.alibaba.csp.sentinel.dashboard.util.authentic.CipherUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
@@ -39,8 +39,8 @@ import java.io.OutputStream;
 public class LoginController {
     private final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${LOGIN_VALIDATE_CODE}")
-    private String LOGIN_VALIDATE_CODE;
+    @Value("${Login.ValidateVerificationCode:true}")
+    private boolean validateVerificationCode;
 
     @Autowired
     private UserService userService;
@@ -53,7 +53,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/login")
     public String login(Model model) {
-        return "view/login/login";
+        return "/#/dashboard/login.html";
     }
 
     /**
@@ -105,20 +105,14 @@ public class LoginController {
             //提示用户名或密码不能为空
             LOG.info("LoginController用户名或密码不能为空");
             //转向到登陆页面
-            return "redirect:/cmpp-manage/login";
+            return "redirect:/views/dashboard/login.html";
         }
 
         try {
             //解密
             username = new String(Base64.decodeBase64(username.replace(" ", "+")), "UTF-8");
             password = new String(Base64.decodeBase64(password.replace(" ", "+")), "UTF-8");
-            //是否校验验证码
-            String validate = LOGIN_VALIDATE_CODE;
-            if (StringUtils.isBlank(validate)) {
-                LOG.info("LoginController登录校验失败,请稍后重试");
-                return "view/login/login";
-            }
-            if ("true".equalsIgnoreCase(validate)) {
+            if (validateVerificationCode) {
                 String rightCode = (String) session.getAttribute("code");
                 if (StringUtils.isBlank(rightCode) || StringUtils.isBlank(validCode)) {
                     LOG.info("LoginController验证码不能为空");
@@ -140,12 +134,12 @@ public class LoginController {
             //用户登录
             subject.login(token);
             //获取用户信息
-            return "redirect:/cmpp-manage/index";
+            return "redirect:/main";
 
         } catch (Exception e) {
             LOG.error("用户名或密码错误", e);
             //转向到登陆页面
-            return "view/login/login";
+            return "/views/dashboard/login.html";
         }
     }
 
