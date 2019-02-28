@@ -1,4 +1,4 @@
-package com.alibaba.csp.sentinel.dashboard.shiro;
+package com.alibaba.csp.sentinel.dashboard.config.shiro;
 
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;

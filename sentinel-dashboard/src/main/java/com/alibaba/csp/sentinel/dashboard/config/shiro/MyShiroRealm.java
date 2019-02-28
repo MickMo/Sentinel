@@ -1,4 +1,4 @@
-package com.alibaba.csp.sentinel.dashboard.shiro;
+package com.alibaba.csp.sentinel.dashboard.config.shiro;
 
 import com.alibaba.csp.sentinel.dashboard.bean.Roles;
 import com.alibaba.csp.sentinel.dashboard.bean.User;
