@@ -24,7 +24,7 @@ import javax.sql.DataSource;
  **/
 @Configuration
 @EnableTransactionManagement
-@MapperScan(value = {"com.alibaba.csp.sentinel.dashboard.dao"})
+//@MapperScan(value = {"com.alibaba.csp.sentinel.dashboard.dao"})
 public class MyBatisConfig implements TransactionManagementConfigurer {
     @Autowired
     DataSource dataSource;
