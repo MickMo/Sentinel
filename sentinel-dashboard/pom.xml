@@ -50,10 +50,6 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
             <exclusions>
@@ -89,6 +85,13 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>1.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>Camden.SR5</version>
+            <type>pom</type>
+            <scope>import</scope>
         </dependency>
 
         <!--shrio依赖-->
@@ -174,6 +177,8 @@
         </dependency>
     </dependencies>
 
+
+
     <build>
         <finalName>sentinel-dashboard</finalName>
         <plugins>
@@ -215,6 +220,14 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.txt</include>
+                    <include>*.xml</include>
+                    <include>*.wsdl</include>
+                    <include>reports/*</include>
+                    <include>managerReports/*</include>
+                    <include>mappers/*</include>
+                </includes>
             </resource>
 
             <resource>
