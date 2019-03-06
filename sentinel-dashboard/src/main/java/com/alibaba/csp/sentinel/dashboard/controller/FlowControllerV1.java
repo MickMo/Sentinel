@@ -15,19 +15,16 @@
  */
 package com.alibaba.csp.sentinel.dashboard.controller;
 
-import java.util.Date;
-import java.util.List;
-
-import com.alibaba.csp.sentinel.util.StringUtil;
-
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.InMemoryRuleRepositoryAdapter;
+import com.alibaba.csp.sentinel.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +33,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Flow rule controller.
@@ -54,29 +54,6 @@ public class FlowControllerV1 {
 
     @Autowired
     private SentinelApiClient sentinelApiClient;
-
-    @GetMapping("/rules")
-    public Result<List<FlowRuleEntity>> apiQueryMachineRules(@RequestParam String app,
-                                                             @RequestParam String ip,
-                                                             @RequestParam Integer port) {
-        if (StringUtil.isEmpty(app)) {
-            return Result.ofFail(-1, "app can't be null or empty");
-        }
-        if (StringUtil.isEmpty(ip)) {
-            return Result.ofFail(-1, "ip can't be null or empty");
-        }
-        if (port == null) {
-            return Result.ofFail(-1, "port can't be null");
-        }
-        try {
-            List<FlowRuleEntity> rules = sentinelApiClient.fetchFlowRuleOfMachine(app, ip, port);
-            rules = repository.saveAll(rules);
-            return Result.ofSuccess(rules);
-        } catch (Throwable throwable) {
-            logger.error("Error when querying flow rules", throwable);
-            return Result.ofThrowable(-1, throwable);
-        }
-    }
 
     private <R> Result<R> checkEntityInternal(FlowRuleEntity entity) {
         if (StringUtil.isBlank(entity.getApp())) {
@@ -125,6 +102,48 @@ public class FlowControllerV1 {
         return null;
     }
 
+    @GetMapping("/export")
+    public List<FlowRuleEntity> exportRules() {
+        // TODO: 3/5/2019 export all rule to file
+        return null;
+    }
+
+    @GetMapping("/import")
+    public Result<List<FlowRuleEntity>> importRules(@RequestParam List<FlowRuleEntity> rules) {
+        // TODO: 3/5/2019 import  rules from file
+        rules = repository.saveAll(rules);
+        for (FlowRuleEntity entity : rules) {
+            if (!publishRules(entity.getApp(), entity.getIp(), entity.getPort())) {
+                logger.error("publish flow rules fail after rule delete");
+                return Result.ofFail(-1, "brabrabra");
+            }
+        }
+        return Result.ofSuccess(rules);
+    }
+
+    @GetMapping("/rules")
+    public Result<List<FlowRuleEntity>> apiQueryMachineRules(@RequestParam String app,
+                                                             @RequestParam String ip,
+                                                             @RequestParam Integer port) {
+        if (StringUtil.isEmpty(app)) {
+            return Result.ofFail(-1, "app can't be null or empty");
+        }
+        if (StringUtil.isEmpty(ip)) {
+            return Result.ofFail(-1, "ip can't be null or empty");
+        }
+        if (port == null) {
+            return Result.ofFail(-1, "port can't be null");
+        }
+        try {
+            List<FlowRuleEntity> rules = sentinelApiClient.fetchFlowRuleOfMachine(app, ip, port);
+            rules = repository.saveAll(rules);
+            return Result.ofSuccess(rules);
+        } catch (Throwable throwable) {
+            logger.error("Error when querying flow rules", throwable);
+            return Result.ofThrowable(-1, throwable);
+        }
+    }
+
     @PostMapping("/rule")
     public Result<FlowRuleEntity> apiAddFlowRule(@RequestBody FlowRuleEntity entity) {
         Result<FlowRuleEntity> checkResult = checkEntityInternal(entity);
@@ -151,9 +170,9 @@ public class FlowControllerV1 {
 
     @PutMapping("/save.json")
     public Result<FlowRuleEntity> updateIfNotNull(Long id, String app,
-                              String limitApp, String resource, Integer grade,
-                              Double count, Integer strategy, String refResource,
-                              Integer controlBehavior, Integer warmUpPeriodSec, Integer maxQueueingTimeMs) {
+                                                  String limitApp, String resource, Integer grade,
+                                                  Double count, Integer strategy, String refResource,
+                                                  Integer controlBehavior, Integer warmUpPeriodSec, Integer maxQueueingTimeMs) {
         if (id == null) {
             return Result.ofFail(-1, "id can't be null");
         }
@@ -246,8 +265,18 @@ public class FlowControllerV1 {
         return Result.ofSuccess(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     private boolean publishRules(String app, String ip, Integer port) {
-        List<FlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
-        return sentinelApiClient.setFlowRuleOfMachine(app, ip, port, rules);
+        // TODO: 3/6/2019 保存到redis
+        try{
+
+            //从内存读取所有的规则
+            List<FlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+
+            return sentinelApiClient.setFlowRuleOfMachine(app, ip, port, rules);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
