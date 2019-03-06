@@ -262,6 +262,12 @@ public class SentinelApiClient {
     }
 
     public List<FlowRuleEntity> fetchFlowRuleOfMachine(String app, String ip, int port) {
+
+// TODO: 3/6/2019 从redis读取数据
+        /**
+         * Get All flow rules from certain client
+         */
+
         String url = "http://" + ip + ":" + port + "/" + GET_RULES_PATH + "?type=" + FLOW_RULE_TYPE;
         String body = httpGetContent(url);
         logger.info("FlowRule Body:{}", body);
