@@ -2,7 +2,7 @@ package com.alibaba.csp.sentinel.dashboard.service.user;
 
 import com.alibaba.csp.sentinel.dashboard.bean.auth.Roles;
 import com.alibaba.csp.sentinel.dashboard.bean.auth.User;
-import com.alibaba.csp.sentinel.dashboard.dao.user.UserDao;
+import com.alibaba.csp.sentinel.dashboard.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
