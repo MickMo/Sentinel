@@ -1,7 +1,7 @@
 package com.alibaba.csp.sentinel.dashboard.controller.authentication;
 
 
-import com.alibaba.csp.sentinel.dashboard.bean.User;
+import com.alibaba.csp.sentinel.dashboard.bean.auth.User;
 import com.alibaba.csp.sentinel.dashboard.bean.login.VerifyCode;
 import com.alibaba.csp.sentinel.dashboard.service.user.UserService;
 import com.alibaba.csp.sentinel.dashboard.config.shiro.MyShiroRealm;

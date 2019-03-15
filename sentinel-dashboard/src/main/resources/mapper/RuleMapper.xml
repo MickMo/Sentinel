@@ -1,32 +1,87 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.alibaba.csp.sentinel.dashboard.dao.user.UserDao">
-    <select id="findByLoginname" parameterType="string" resultType="com.alibaba.csp.sentinel.dashboard.bean.User">
-    SELECT * FROM USER_INFO WHERE LOGINNAME=#{loginname} and deleteflag = '0'
+<mapper namespace="com.alibaba.csp.sentinel.dashboard.dao.rule.RuleDao">
+    <sql id="tableName">sentinel_rule</sql>
+
+    <sql id="commonSQL">
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ruleContext !=null and ruleContext !=''">ruleContext = #{ruleContext},</if>
+            <if test="createDate !=null ">createDate = #{createDate},</if>
+            <if test="modifiedDate !=null ">modifiedDate = #{modifiedDate},</if>
+            <if test="ip !=null and ip !=''">ip = #{ip},</if>
+            <if test="port !=null and port !=''">port = #{port},</if>
+            <if test="appName !=null and appName !=''">appName = #{appName},</if>
+            <if test="version !=null and version !=''">version = #{version},</if>
+            <if test="status !=null and status !=''">status = #{status},</if>
+            <if test="deleteFlag !=null and deleteFlag !=''">deleteFlag = #{deleteFlag},</if>
+        </trim>
+    </sql>
+
+    <sql id="baseColumnName">
+        ruleContext,ip,port,appName,version,
+    </sql>
+
+    <select id="selectAll" resultType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule">
+        select * from
+        <include refid="tableName"/>
+        where deleteFlag=0 and status=1
+    </select>
+
+    <select id="select" resultType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule">
+        select * from
+        <include refid="tableName"/>
+        where 1=1
+        and deleteFlag=0
+        and status=1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="appName != null and appName !=''">
+            and appName = #{appName}
+        </if>
+        <if test="ip !=null and ip !=''">
+            and ip = #{ip}
+        </if>
+        <if test="port !=null and port !=''">
+            and port = #{port}
+        </if>
+        <if test="version !=null and version !=''">
+            and version = #{version}
+        </if>
+
     </select>
 
 
-    <select id="findRolesByUserId" parameterType="string" resultType="com.alibaba.csp.sentinel.dashboard.bean.Roles">
-    select * from roles where rolesId in (select rolesid from user_rel_roles where userid = #{userid} and deleteflag = '0'    )  and deleteflag = '0'
-    </select>
+    <update id="update" parameterType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule">
+        UPDATE
+        <include refid="tableName"/>
+        <include refid="commonSQL"/>,
+        set modifiedDate = now()
+        WHERE id=#{id}
+    </update>
 
+    <update id="delete" parameterType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule">
+        update <include refid="tableName"/>
+        set deleteFlag=1
+        where id=#{id}
+    </update>
 
-    <select id="findAuthByUserId" parameterType="string" resultType="java.util.HashMap">
-    select * from authority where authid in(
-         select authrel.authid from roles_rel_auth authrel
-            inner join roles r on r.rolesid = authrel.rolesid and r.deleteflag = '0'
-            inner join user_rel_roles userrel on userrel.rolesid = r.rolesid and userrel.deleteflag = '0'
-            where userrel.userid = #{userid} and authrel.deleteflag = '0'
-        ) and  deleteflag = '0'
-    </select>
+    <insert id="insert" parameterType="java.util.List">
+        insert into
+        <include refid="tableName"/>
 
-
-    <select id="findAllAuth" resultType="java.util.HashMap">
-
-    select concat(auth.authid) authid, auth.authurl ,r.rolescode from authority auth
-        inner join  roles_rel_auth authrel on auth.authid = authrel.authid and authrel.deleteflag = '0'
-        inner join roles r on r.rolesid = authrel.rolesid and r.deleteflag = '0'
-        where auth.deleteflag = '0'
-        order by auth.authid
-    </select>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="baseColumnName"/>
+        </trim>
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.ruleContext},
+            #{item.ip},
+            #{item.port},
+            #{item.appName},
+            #{item.version},
+            )
+        </foreach>
+    </insert>
 </mapper>

@@ -1,4 +1,4 @@
-package com.alibaba.csp.sentinel.dashboard.bean;
+package com.alibaba.csp.sentinel.dashboard.bean.auth;
 
 import java.util.Date;
 

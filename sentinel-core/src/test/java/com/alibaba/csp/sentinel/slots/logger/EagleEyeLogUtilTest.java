@@ -36,7 +36,7 @@ public class EagleEyeLogUtilTest {
 
     @Test
     public void testChangeLogBase() throws Exception {
-        String userHome = System.getProperty("user.home");
+        String userHome = System.getProperty("auth.home");
         String newLogBase = userHome + File.separator + "tmpLogDir" + System.currentTimeMillis();
         System.setProperty(LogBase.LOG_DIR, newLogBase);
 

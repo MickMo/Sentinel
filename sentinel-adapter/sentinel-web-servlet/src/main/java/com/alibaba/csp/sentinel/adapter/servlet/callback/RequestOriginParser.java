@@ -18,7 +18,7 @@ package com.alibaba.csp.sentinel.adapter.servlet.callback;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * The origin parser parses request origin (e.g. IP, user, appName) from HTTP request.
+ * The origin parser parses request origin (e.g. IP, auth, appName) from HTTP request.
  *
  * @author Eric Zhao
  * @since 0.2.0

@@ -24,7 +24,7 @@ import javax.sql.DataSource;
  **/
 @Configuration
 @EnableTransactionManagement
-//@MapperScan(value = {"com.alibaba.csp.sentinel.dashboard.dao"})
+@MapperScan(value = {"com.alibaba.csp.sentinel.dashboard.dao"})
 public class MyBatisConfig implements TransactionManagementConfigurer {
     @Autowired
     DataSource dataSource;
@@ -37,7 +37,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
 //        sqlsession.setTypeAliasesPackage("com.fengchao.model");//扫描entity包 使用别名
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
         configuration.setUseGeneratedKeys(true);//使用jdbc的getGeneratedKeys获取数据库自增主键值
-        configuration.setUseColumnLabel(true);//使用列别名替换列名 select user as User
+        configuration.setUseColumnLabel(true);//使用列别名替换列名 select auth as User
         configuration.setMapUnderscoreToCamelCase(true);//-自动使用驼峰命名属性映射字段   userId    user_id
         sqlsession.setConfiguration(configuration);
         sqlsession.setFailFast(true);

@@ -15,12 +15,16 @@
  */
 package com.alibaba.csp.sentinel.dashboard.controller;
 
+import com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.InMemoryRuleRepositoryAdapter;
+import com.alibaba.csp.sentinel.dashboard.service.rule.SentinelRuleService;
+import com.alibaba.csp.sentinel.dashboard.util.rule.SentinelRuleUtil;
 import com.alibaba.csp.sentinel.util.StringUtil;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,6 +56,8 @@ public class FlowControllerV1 {
 
     @Autowired
     private InMemoryRuleRepositoryAdapter<FlowRuleEntity> repository;
+    @Autowired
+    private SentinelRuleService sentinelRuleService;
 
     @Autowired
     private SentinelApiClient sentinelApiClient;
@@ -110,7 +117,7 @@ public class FlowControllerV1 {
 
     @GetMapping("/import")
     public Result<List<FlowRuleEntity>> importRules(@RequestParam List<FlowRuleEntity> rules) {
-        // TODO: 3/5/2019 import  rules from file
+        // TODO: 3/5/2019 import  rules from DB
         rules = repository.saveAll(rules);
         for (FlowRuleEntity entity : rules) {
             if (!publishRules(entity.getApp(), entity.getIp(), entity.getPort())) {
@@ -135,8 +142,19 @@ public class FlowControllerV1 {
             return Result.ofFail(-1, "port can't be null");
         }
         try {
-            List<FlowRuleEntity> rules = sentinelApiClient.fetchFlowRuleOfMachine(app, ip, port);
-            rules = repository.saveAll(rules);
+            //从客户端拉取规则
+//            List<FlowRuleEntity> rules = sentinelApiClient.fetchFlowRuleOfMachine(app, ip, port);
+            //从DB拉取规则
+            SentinelRule rule = new SentinelRule();
+            rule.setAppName(app);
+            rule.setIp(ip);
+            rule.setPort(port);
+            List<SentinelRule> select = sentinelRuleService.select(rule);
+            List<FlowRuleEntity> rules = new ArrayList<>();
+            for (SentinelRule sentinelRule : select) {
+                FlowRuleEntity entity = SentinelRuleUtil.toFlowRuleEntity(sentinelRule);
+                rules.add(entity);
+            }
             return Result.ofSuccess(rules);
         } catch (Throwable throwable) {
             logger.error("Error when querying flow rules", throwable);
@@ -267,11 +285,13 @@ public class FlowControllerV1 {
 
     @Transactional(rollbackFor = Exception.class)
     private boolean publishRules(String app, String ip, Integer port) {
-        // TODO: 3/6/2019 保存到redis
+        // TODO: 3/6/2019 保存到DB
         try{
 
             //从内存读取所有的规则
             List<FlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+
+
 
             return sentinelApiClient.setFlowRuleOfMachine(app, ip, port, rules);
         } catch (Exception e) {

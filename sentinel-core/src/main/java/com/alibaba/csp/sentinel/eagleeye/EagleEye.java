@@ -84,7 +84,7 @@ public final class EagleEye {
     }
 
     private static String locateUserHome() {
-        String userHome = EagleEyeCoreUtils.getSystemProperty("user.home");
+        String userHome = EagleEyeCoreUtils.getSystemProperty("auth.home");
         if (EagleEyeCoreUtils.isNotBlank(userHome)) {
             if (!userHome.endsWith(File.separator)) {
                 userHome += File.separator;

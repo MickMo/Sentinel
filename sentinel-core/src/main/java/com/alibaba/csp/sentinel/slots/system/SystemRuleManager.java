@@ -70,7 +70,7 @@ public class SystemRuleManager {
     private static volatile long maxRt = Long.MAX_VALUE;
     private static volatile long maxThread = Long.MAX_VALUE;
     /**
-     * mark whether the threshold are set by user.
+     * mark whether the threshold are set by auth.
      */
     private static volatile boolean highestSystemLoadIsSet = false;
     private static volatile boolean qpsIsSet = false;

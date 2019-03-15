@@ -1,7 +1,7 @@
 package com.alibaba.csp.sentinel.dashboard.config.shiro;
 
-import com.alibaba.csp.sentinel.dashboard.bean.Roles;
-import com.alibaba.csp.sentinel.dashboard.bean.User;
+import com.alibaba.csp.sentinel.dashboard.bean.auth.Roles;
+import com.alibaba.csp.sentinel.dashboard.bean.auth.User;
 import com.alibaba.csp.sentinel.dashboard.service.user.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -42,14 +42,14 @@ public class MyShiroRealm extends AuthorizingRealm {
         logger.warn("Testing granted login request.");
 
         return new SimpleAuthenticationInfo();
-//        if (user != null) {
-//            LOG.info("username:" + user.getUsername());
-//            List<Roles> roles = userService.findRolesByUserId(Integer.toString(user.getUserid()));
+//        if (auth != null) {
+//            LOG.info("username:" + auth.getUsername());
+//            List<Roles> roles = userService.findRolesByUserId(Integer.toString(auth.getUserid()));
 //            if (roles != null && roles.size() > 0) {
-//                user.setRoles(roles.get(0));
+//                auth.setRoles(roles.get(0));
 //            }
 //            // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
-//            return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+//            return new SimpleAuthenticationInfo(auth, auth.getPassword(), getName());
 //        }
 //        return null;
     }
