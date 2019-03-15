@@ -1,7 +1,7 @@
 package com.alibaba.csp.sentinel.dashboard.service.rule;
 
 import com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule;
-import com.alibaba.csp.sentinel.dashboard.dao.rule.SentinelRuleDao;
+import com.alibaba.csp.sentinel.dashboard.dao.SentinelRuleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

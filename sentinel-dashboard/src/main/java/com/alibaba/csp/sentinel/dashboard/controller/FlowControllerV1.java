@@ -24,7 +24,6 @@ import com.alibaba.csp.sentinel.dashboard.repository.rule.InMemoryRuleRepository
 import com.alibaba.csp.sentinel.dashboard.service.rule.SentinelRuleService;
 import com.alibaba.csp.sentinel.dashboard.util.rule.SentinelRuleUtil;
 import com.alibaba.csp.sentinel.util.StringUtil;
-import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,6 +175,8 @@ public class FlowControllerV1 {
         entity.setResource(entity.getResource().trim());
         try {
             entity = repository.save(entity);
+            SentinelRule sentinelRule = SentinelRuleUtil.toSentinelRule(entity);
+            sentinelRuleService.add(sentinelRule);
         } catch (Throwable throwable) {
             logger.error("Failed to add flow rule", throwable);
             return Result.ofThrowable(-1, throwable);
@@ -284,13 +285,12 @@ public class FlowControllerV1 {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    private boolean publishRules(String app, String ip, Integer port) {
+    public boolean publishRules(String app, String ip, Integer port) {
         // TODO: 3/6/2019 保存到DB
-        try{
+        try {
 
             //从内存读取所有的规则
             List<FlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
-
 
 
             return sentinelApiClient.setFlowRuleOfMachine(app, ip, port, rules);

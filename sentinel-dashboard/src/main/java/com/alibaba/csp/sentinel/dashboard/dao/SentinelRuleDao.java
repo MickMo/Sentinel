@@ -1,4 +1,4 @@
-package com.alibaba.csp.sentinel.dashboard.dao.rule;
+package com.alibaba.csp.sentinel.dashboard.dao;
 
 
 import com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule;
