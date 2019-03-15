@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.alibaba.csp.sentinel.dashboard.dao.user.UserDao">
-    <select id="findByLoginname" parameterType="string" resultType="com.alibaba.csp.sentinel.dashboard.bean.User">
+    <select id="findByLoginname" parameterType="string" resultType="com.alibaba.csp.sentinel.dashboard.bean.auth.User">
     SELECT * FROM USER_INFO WHERE LOGINNAME=#{loginname} and deleteflag = '0'
     </select>
 
 
-    <select id="findRolesByUserId" parameterType="string" resultType="com.alibaba.csp.sentinel.dashboard.bean.Roles">
+    <select id="findRolesByUserId" parameterType="string" resultType="com.alibaba.csp.sentinel.dashboard.bean.auth.Roles">
     select * from roles where rolesId in (select rolesid from user_rel_roles where userid = #{userid} and deleteflag = '0'    )  and deleteflag = '0'
     </select>
 

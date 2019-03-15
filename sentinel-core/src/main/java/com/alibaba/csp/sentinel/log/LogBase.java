@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import com.alibaba.csp.sentinel.util.PidUtil;
 
 /**
- * Default log base dir is ${user.home}/logs/csp/, we can use {@link #LOG_DIR} System property to override it.
+ * Default log base dir is ${auth.home}/logs/csp/, we can use {@link #LOG_DIR} System property to override it.
  * Default log file name dose not contain pid, but if multi instances of the same app are running in the same
  * machine, we may want to distinguish the log file by pid number, in this case, {@link #LOG_NAME_USE_PID}
  * System property could be configured as "true" to turn on this switch.
@@ -34,7 +34,7 @@ import com.alibaba.csp.sentinel.util.PidUtil;
 public class LogBase {
     public static final String LOG_CHARSET = "utf-8";
     private static final String DIR_NAME = "logs" + File.separator + "csp";
-    private static final String USER_HOME = "user.home";
+    private static final String USER_HOME = "auth.home";
     public static final String LOG_DIR = "csp.sentinel.log.dir";
     public static final String LOG_NAME_USE_PID = "csp.sentinel.log.use.pid";
     private static boolean logNameUsePid = false;
@@ -51,7 +51,7 @@ public class LogBase {
     }
 
     private static void init() {
-        // first use -D, then use user home.
+        // first use -D, then use auth home.
         String logDir = System.getProperty(LOG_DIR);
 
         if (logDir == null || logDir.isEmpty()) {

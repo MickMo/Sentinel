@@ -194,7 +194,7 @@ abstract class Striped64 extends Number {
      * virtualized form is needed within retryUpdate.
      *
      * @param currentValue the current value (of either base or a cell)
-     * @param newValue     the argument from a user update call
+     * @param newValue     the argument from a auth update call
      * @return result of the update function
      */
     abstract long fn(long currentValue, long newValue);

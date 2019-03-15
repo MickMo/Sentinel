@@ -1,11 +1,10 @@
 package com.alibaba.csp.sentinel.dashboard.dao.user;
 
 
-import com.alibaba.csp.sentinel.dashboard.bean.Roles;
-import com.alibaba.csp.sentinel.dashboard.bean.User;
+import com.alibaba.csp.sentinel.dashboard.bean.auth.Roles;
+import com.alibaba.csp.sentinel.dashboard.bean.auth.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;

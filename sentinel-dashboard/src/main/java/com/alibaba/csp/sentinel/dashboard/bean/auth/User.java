@@ -1,4 +1,4 @@
-package com.alibaba.csp.sentinel.dashboard.bean;
+package com.alibaba.csp.sentinel.dashboard.bean.auth;
 
 /**
  * Created by Administrator on 2016/12/5 0005.

@@ -168,7 +168,7 @@ public class CtSph implements Sph {
      *
      * @param resourceWrapper resource name
      * @param count           tokens needed
-     * @param args            arguments of user method call
+     * @param args            arguments of auth method call
      * @return {@link Entry} represents this call
      * @throws BlockException if any rule's threshold is exceeded
      */

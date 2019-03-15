@@ -46,7 +46,7 @@ public class RecordLogTest {
 
     @Test
     public void testChangeLogBase() {
-        String userHome = System.getProperty("user.home");
+        String userHome = System.getProperty("auth.home");
         String newLogBase = userHome + File.separator + "tmpLogDir" + System.currentTimeMillis();
         System.setProperty(LogBase.LOG_DIR, newLogBase);
 
@@ -59,11 +59,11 @@ public class RecordLogTest {
     @Test
     public void testLogBaseDir() {
         RecordLog.info("testLogBaseDir");
-        assertTrue(RecordLog.getLogBaseDir().startsWith(System.getProperty("user.home")));
+        assertTrue(RecordLog.getLogBaseDir().startsWith(System.getProperty("auth.home")));
     }
 
     public void testLogNameNotUsePid() {
-        String userHome = System.getProperty("user.home");
+        String userHome = System.getProperty("auth.home");
         String newLogBase = userHome + File.separator + "tmpLogDir" + System.currentTimeMillis();
         System.setProperty(LogBase.LOG_DIR, newLogBase);
         RecordLog.info("testLogNameNotUsePid");
@@ -75,7 +75,7 @@ public class RecordLogTest {
     }
 
     public void testLogNameUsePid() {
-        String userHome = System.getProperty("user.home");
+        String userHome = System.getProperty("auth.home");
         String newLogBase = userHome + File.separator + "tmpLogDir" + System.currentTimeMillis();
         System.setProperty(LogBase.LOG_DIR, newLogBase);
         System.setProperty(LogBase.LOG_NAME_USE_PID, "true");

@@ -28,7 +28,7 @@ import com.alibaba.csp.sentinel.util.AssertUtil;
 
 /**
  * The universal config of Courier. The config is retrieved from
- * {@code ${user.home}/logs/csp/${appName}.properties} by default.
+ * {@code ${auth.home}/logs/csp/${appName}.properties} by default.
  *
  * @author leyou
  */
