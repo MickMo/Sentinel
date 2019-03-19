@@ -16,7 +16,7 @@ public class SentinelRule {
     private Date createDate;
     private Date modifiedDate;
 
-    private String ip;
+    private String host;
     private int port;
     private String appName;
 
@@ -63,21 +63,21 @@ public class SentinelRule {
     }
 
     /**
-     * Gets ip.
+     * Gets host.
      *
-     * @return Value of ip.
+     * @return Value of host.
      */
-    public String getIp() {
-        return ip;
+    public String getHost() {
+        return host;
     }
 
     /**
-     * Sets new ip.
+     * Sets new host.
      *
-     * @param ip New value of ip.
+     * @param host New value of host.
      */
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     /**
@@ -206,4 +206,6 @@ public class SentinelRule {
     public int getStatus() {
         return status;
     }
+
+
 }

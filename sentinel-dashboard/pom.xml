@@ -46,6 +46,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
+            <scope>test</scope>
         </dependency>
 
 
@@ -177,6 +178,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Use MySQL Connector-J -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.13</version>
+        </dependency>
+        <dependency>
         	<groupId>com.github.stefanbirkner</groupId>
         	<artifactId>system-rules</artifactId>
         	<version>1.16.1</version>
@@ -231,6 +244,8 @@
                     <include>*.txt</include>
                     <include>*.xml</include>
                     <include>*.wsdl</include>
+                    <include>*.properties</include>
+                    <include>*.yml</include>
                     <include>reports/*</include>
                     <include>managerReports/*</include>
                     <include>mappers/*</include>

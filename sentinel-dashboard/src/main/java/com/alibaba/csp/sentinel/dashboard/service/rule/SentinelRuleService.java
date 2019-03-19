@@ -47,6 +47,7 @@ public class SentinelRuleService {
     public int modify(SentinelRule rule){
         return sentinelRuleDao.modify(rule);
     }
+
     public List<SentinelRule> select(SentinelRule rule){
         return sentinelRuleDao.select(rule);
     }
