@@ -3,6 +3,7 @@ package com.alibaba.csp.sentinel.dashboard.config.db;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,6 @@ import javax.sql.DataSource;
  */
 
 @Configuration
-/*@PropertySource("${properties.location}:config/jdbc.properties")*/
 public class DataSourceConfig {
 
     private Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
@@ -28,6 +28,7 @@ public class DataSourceConfig {
      * @return DataSource
      */
     @Bean
+    @ConfigurationProperties(prefix = "hikaricp")
     public DataSource dataSource() {
         HikariDataSource build = DataSourceBuilder.create().type(HikariDataSource.class).build();
         return build;

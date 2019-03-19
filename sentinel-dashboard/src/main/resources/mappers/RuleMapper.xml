@@ -8,7 +8,7 @@
             <if test="ruleContext !=null and ruleContext !=''">ruleContext = #{ruleContext},</if>
             <if test="createDate !=null ">createDate = #{createDate},</if>
             <if test="modifiedDate !=null ">modifiedDate = #{modifiedDate},</if>
-            <if test="ip !=null and ip !=''">ip = #{ip},</if>
+            <if test="host !=null and host !=''">host = #{host},</if>
             <if test="port !=null and port !=''">port = #{port},</if>
             <if test="appName !=null and appName !=''">appName = #{appName},</if>
             <if test="version !=null and version !=''">version = #{version},</if>
@@ -18,7 +18,7 @@
     </sql>
 
     <sql id="baseColumnName">
-        ruleContext,ip,port,appName,version,
+        ruleContext,host,port,appName,version,
     </sql>
 
     <select id="selectAll" resultType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule">
@@ -27,26 +27,26 @@
         where deleteFlag=0 and status=1
     </select>
 
-    <select id="select" resultType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule">
+    <select id="select" resultType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule" parameterType="com.alibaba.csp.sentinel.dashboard.bean.sentinel.SentinelRule">
         select * from
         <include refid="tableName"/>
         where 1=1
         and deleteFlag=0
         and status=1
-        <if test="id != null">
-            and id = #{id}
+        <if test="id != null and id !=''">
+            and id = #{id,jdbcType=DECIMAL}
         </if>
         <if test="appName != null and appName !=''">
-            and appName = #{appName}
+            and appName = #{appName,jdbcType=VARCHAR}
         </if>
-        <if test="ip !=null and ip !=''">
-            and ip = #{ip}
+        <if test="host !=null and host !=''">
+            and host = #{host,jdbcType=VARCHAR}
         </if>
         <if test="port !=null and port !=''">
-            and port = #{port}
+            and port = #{port,jdbcType=DECIMAL}
         </if>
         <if test="version !=null and version !=''">
-            and version = #{version}
+            and version = #{version,jdbcType=VARCHAR}
         </if>
 
     </select>
@@ -74,14 +74,14 @@
             <include refid="baseColumnName"/>
         </trim>
         values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
         <foreach collection="list" item="item" separator=",">
-            (
             #{item.ruleContext},
-            #{item.ip},
+            #{item.host},
             #{item.port},
             #{item.appName},
             #{item.version},
-            )
         </foreach>
+        </trim>
     </insert>
 </mapper>

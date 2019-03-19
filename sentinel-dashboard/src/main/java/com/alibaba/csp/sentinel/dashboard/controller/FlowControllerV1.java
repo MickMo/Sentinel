@@ -146,7 +146,7 @@ public class FlowControllerV1 {
             //从DB拉取规则
             SentinelRule rule = new SentinelRule();
             rule.setAppName(app);
-            rule.setIp(ip);
+            rule.setHost(ip);
             rule.setPort(port);
             List<SentinelRule> select = sentinelRuleService.select(rule);
             List<FlowRuleEntity> rules = new ArrayList<>();

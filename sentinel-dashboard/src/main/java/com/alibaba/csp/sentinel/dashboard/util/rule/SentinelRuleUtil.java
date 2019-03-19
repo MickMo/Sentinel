@@ -17,7 +17,7 @@ public class SentinelRuleUtil {
     public static SentinelRule toSentinelRule(FlowRuleEntity flowRuleEntity) {
         SentinelRule sentinelRule = new SentinelRule();
         sentinelRule.setAppName(flowRuleEntity.getApp());
-        sentinelRule.setIp(flowRuleEntity.getIp());
+        sentinelRule.setHost(flowRuleEntity.getIp());
         sentinelRule.setPort(flowRuleEntity.getPort());
         sentinelRule.setRuleContext(JSON.toJSONString(flowRuleEntity));
         sentinelRule.setStatus(SentinelRuleStatusEnum.enable.getValue());
