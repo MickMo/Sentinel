@@ -8,8 +8,8 @@
             <if test="ruleContext !=null and ruleContext !=''">ruleContext = #{ruleContext},</if>
             <if test="createDate !=null ">createDate = #{createDate},</if>
             <if test="modifiedDate !=null ">modifiedDate = #{modifiedDate},</if>
-            <if test="host !=null and host !=''">host = #{host},</if>
-            <if test="port !=null and port !=''">port = #{port},</if>
+            <!--<if test="host !=null and host !=''">host = #{host},</if>-->
+            <!--<if test="port !=null and port !=''">port = #{port},</if>-->
             <if test="appName !=null and appName !=''">appName = #{appName},</if>
             <if test="version !=null and version !=''">version = #{version},</if>
             <if test="status !=null and status !=''">status = #{status},</if>
@@ -39,12 +39,12 @@
         <if test="appName != null and appName !=''">
             and appName = #{appName,jdbcType=VARCHAR}
         </if>
-        <if test="host !=null and host !=''">
-            and host = #{host,jdbcType=VARCHAR}
-        </if>
-        <if test="port !=null and port !=''">
-            and port = #{port,jdbcType=DECIMAL}
-        </if>
+        <!--<if test="host !=null and host !=''">-->
+            <!--and host = #{host,jdbcType=VARCHAR}-->
+        <!--</if>-->
+        <!--<if test="port !=null and port !=''">-->
+            <!--and port = #{port,jdbcType=DECIMAL}-->
+        <!--</if>-->
         <if test="version !=null and version !=''">
             and version = #{version,jdbcType=VARCHAR}
         </if>

@@ -21,6 +21,8 @@ public class SentinelRuleUtil {
         sentinelRule.setPort(flowRuleEntity.getPort());
         sentinelRule.setRuleContext(JSON.toJSONString(flowRuleEntity));
         sentinelRule.setStatus(SentinelRuleStatusEnum.enable.getValue());
+        sentinelRule.setCreateDate(flowRuleEntity.getGmtCreate());
+        sentinelRule.setModifiedDate(flowRuleEntity.getGmtModified());
         return sentinelRule;
     }
 
